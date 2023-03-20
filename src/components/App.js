@@ -1,6 +1,11 @@
 import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
 import api from '../utils/Api';
 import Header from './Header';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
@@ -11,6 +16,7 @@ import AddPlacePopup from './AddPlacePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState('');
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState('');
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState('');
@@ -21,7 +27,7 @@ function App() {
   React.useEffect(() => {
     function handleEscapeClose(evt) {
       if (evt.key === 'Escape') {
-        closeAllPopups()
+        closeAllPopups();
       }
     }
 
@@ -29,8 +35,8 @@ function App() {
 
     return () => {
       document.removeEventListener('keyup', handleEscapeClose);
-    }
-  }, [])
+    };
+  }, []);
 
   React.useEffect(() => {
     api
@@ -136,17 +142,32 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={{currentUser, loggedIn}}>
       <Header />
+      {/* <Routes>
+        <Route path="/sign-up" />
+        <Route path="/sing-in" />
+        <ProtectedRoute
+          path="/"
+          component={Main}
+          isLoggedIn={loggedIn}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          cards={cards}
+        />
+      </Routes> */}
       <Main
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick}
-        onCardClick={handleCardClick}
-        onCardLike={handleCardLike}
-        onCardDelete={handleCardDelete}
-        cards={cards}
-      />
+      onEditProfile={handleEditProfileClick}
+      onAddPlace={handleAddPlaceClick}
+      onEditAvatar={handleEditAvatarClick}
+      onCardClick={handleCardClick}
+      onCardLike={handleCardLike}
+      onCardDelete={handleCardDelete}
+      cards={cards}/>
       <Footer />
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}

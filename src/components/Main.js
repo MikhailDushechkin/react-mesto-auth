@@ -4,7 +4,7 @@ import api from '../utils/Api';
 import Card from './Card';
 
 function Main(props) {
-  const currentUser = React.useContext(CurrentUserContext);
+  const {currentUser} = React.useContext(CurrentUserContext);
 
   return (
     <main className="content">

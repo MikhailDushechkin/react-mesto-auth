@@ -42,14 +42,20 @@
 @import url(./blocks/popup/__close-button/popup__close-button.css);
 
 @import url(./blocks/form/__title/form__title.css);
+@import url(./blocks/form/__title/_type/form__title_type_auth.css);
 @import url(./blocks/form/__fieldset/form__fieldset.css);
 @import url(./blocks/form/__field/form__field.css);
 @import url(./blocks/form/__input/form__input.css);
+@import url(./blocks/form/__input/_type/form__input_type_auth.css);
 @import url(./blocks/form/__input/_type_error/form__input_type_error.css);
 @import url(./blocks/form/__input-error/form__input-error.css);
 @import url(./blocks/form/__input-error/_active/form__input-error_active.css);
 @import url(./blocks/form/__save-button/form__save-button.css);
+@import url(./blocks/form/__save-button/_type/form__save-button_type_auth.css);
 @import url(./blocks/form/__save-button/_inactive/form__save-button_inactive.css);
+@import url(./blocks/form/_type/form_type_auth.css);
+@import url(./blocks/form/__subtext/form__subtext.css);
+@import url(./blocks/form/__link/form__link.css);
 
 @import url(./blocks/overlay-photo/overlay-photo.css);
 @import url(./blocks/overlay-photo/__container/overlay-photo__container.css);

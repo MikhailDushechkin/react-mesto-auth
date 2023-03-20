@@ -4,13 +4,13 @@ import logo from '../images/logo-white.svg'
 function Header() {
   return (
     <>
-    <heagder className="header">
+    <header className="header">
       <img
         src={logo}
         alt="Логотип 'Место'"
         className="header__logo"
       />
-    </heagder>
+    </header>
     </>
   );
 }
