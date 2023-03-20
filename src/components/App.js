@@ -6,6 +6,7 @@ import Header from './Header';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
