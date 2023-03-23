@@ -1,7 +1,10 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import api from '../utils/Api';
+import * as auth from '../utils/auth';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { AuthDataContext } from '../contexts/AuthDataContext';
 import Header from './Header';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
@@ -14,16 +17,79 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
+  const [formData, setFormData] = React.useState({
+    email: '',
+    password: '',
+  });
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState('');
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState('');
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState('');
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState('');
+  const [isInfoPopupOpen, setInfoPopupOpen] = React.useState('');
+  const [isSuccess, setIsSuccess] = React.useState('');
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+
+  const navigate = useNavigate();
+
+  function handleRegister(email, password) {
+    setInfoPopupOpen(true);
+    auth.register(email, password).then((res) => {
+      if (res) {
+        setIsSuccess(true);
+        setTimeout(() => setInfoPopupOpen(false), 1000);
+        setTimeout(() => navigate('/sign-in'), 1500);
+      }
+    });
+  }
+
+  function handleLogin(email, password) {
+    setInfoPopupOpen(true);
+    auth.authorize(email, password).then((data) => {
+      if (data.token) {
+        setFormData({
+          email: '',
+          password: '',
+        });
+        setIsSuccess(true);
+        setTimeout(() => {
+          setInfoPopupOpen(false);
+        }, 1000);
+        setTimeout(() => {
+          setLoggedIn(true);
+          navigate('/');
+        }, 1500);
+      }
+    });
+  }
+
+  function signOut() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    navigate('/sign-in');
+    setEmail('');
+  }
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setEmail(res.email);
+            navigate('/');
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [navigate]);
 
   React.useEffect(() => {
     function handleEscapeClose(evt) {
@@ -139,36 +205,51 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setInfoPopupOpen(false);
     setSelectedCard(null);
   }
 
   return (
-    <CurrentUserContext.Provider value={{currentUser, loggedIn}}>
-      <Header />
-      {/* <Routes>
-        <Route path="/sign-up" />
-        <Route path="/sing-in" />
-        <ProtectedRoute
-          path="/"
-          component={Main}
-          isLoggedIn={loggedIn}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          cards={cards}
-        />
-      </Routes> */}
-      <Main
-      onEditProfile={handleEditProfileClick}
-      onAddPlace={handleAddPlaceClick}
-      onEditAvatar={handleEditAvatarClick}
-      onCardClick={handleCardClick}
-      onCardLike={handleCardLike}
-      onCardDelete={handleCardDelete}
-      cards={cards}/>
+    <CurrentUserContext.Provider value={{ currentUser, loggedIn }}>
+      <AuthDataContext.Provider value={{ formData, setFormData }}>
+        <Header />
+        <Routes>
+          <Route
+            path="/sign-up"
+            element={
+              <Register
+                onRegister={handleRegister}
+              />
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <Login
+                authorize={handleLogin}
+              />
+            }
+          />
+          <Route
+            exact
+            path="/"
+            element={
+              <ProtectedRoute
+                element={Main}
+                isLoggedIn={loggedIn}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+                cards={cards}
+              />
+            }
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AuthDataContext.Provider>
       <Footer />
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
@@ -187,6 +268,11 @@ function App() {
       />
       <PopupWithForm name="confirm" title="Вы уверены?" buttonText="Да" />
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <InfoTooltip
+        isOpen={isInfoPopupOpen}
+        onClose={closeAllPopups}
+        isSuccess={isSuccess}
+      />
     </CurrentUserContext.Provider>
   );
 }
