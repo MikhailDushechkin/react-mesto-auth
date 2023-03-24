@@ -83,7 +83,7 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            setEmail(res.email);
+            setEmail(res.data.email);
             navigate('/');
           }
         })
@@ -212,7 +212,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={{ currentUser, loggedIn }}>
       <AuthDataContext.Provider value={{ formData, setFormData }}>
-        <Header />
+        <Header email={email} onSignOut ={signOut}/>
         <Routes>
           <Route
             path="/sign-up"
@@ -226,7 +226,7 @@ function App() {
             path="/sign-in"
             element={
               <Login
-                authorize={handleLogin}
+                onLogin={handleLogin}
               />
             }
           />

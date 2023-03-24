@@ -5,12 +5,8 @@ import Form from './Form';
 import * as auth from '../utils/auth';
 import { AuthDataContext } from '../contexts/AuthDataContext';
 
-function Login({authorize}) {
+function Login({onLogin}) {
   const {formData, setFormData} = React.useContext(AuthDataContext)
-  // const [formData, setFormData] = React.useState({
-  //   email: '',
-  //   password: '',
-  // });
 
   function handleChangeData(evt) {
     const { name, value } = evt.target;
@@ -26,7 +22,7 @@ function Login({authorize}) {
     if (!formData.email || !formData.password) {
       return;
     }
-    authorize(formData.email, formData.password)
+    onLogin(formData.email, formData.password)
   }
 
   return (

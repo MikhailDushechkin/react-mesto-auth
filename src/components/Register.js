@@ -6,10 +6,6 @@ import { AuthDataContext } from '../contexts/AuthDataContext';
 
 function Register({ onRegister }) {
   const { formData, setFormData } = React.useContext(AuthDataContext);
-  // const [formData, setFormData] = React.useState({
-  //   email: '',
-  //   password: '',
-  // });
 
   function handleChangeData(evt) {
     const { name, value } = evt.target;
