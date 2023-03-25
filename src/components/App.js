@@ -30,6 +30,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState('');
   const [isInfoPopupOpen, setInfoPopupOpen] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState('');
+  const [isMenuOpen, setIsMenuOpen] = React.useState('');
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -201,6 +202,14 @@ function App() {
     setSelectedCard(card);
   }
 
+  React.useEffect(() => {
+    setIsMenuOpen(false)
+  },[navigate])
+  
+  function handleMenuClick() {
+    setIsMenuOpen(!isMenuOpen);
+  }
+
   function closeAllPopups() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
@@ -212,24 +221,18 @@ function App() {
   return (
     <CurrentUserContext.Provider value={{ currentUser, loggedIn }}>
       <AuthDataContext.Provider value={{ formData, setFormData }}>
-        <Header email={email} onSignOut ={signOut}/>
+        <Header
+          email={email}
+          onSignOut={signOut}
+          isMenuOpen={isMenuOpen}
+          onMenuClick={handleMenuClick}
+        />
         <Routes>
           <Route
             path="/sign-up"
-            element={
-              <Register
-                onRegister={handleRegister}
-              />
-            }
+            element={<Register onRegister={handleRegister} />}
           />
-          <Route
-            path="/sign-in"
-            element={
-              <Login
-                onLogin={handleLogin}
-              />
-            }
-          />
+          <Route path="/sign-in" element={<Login onLogin={handleLogin} />} />
           <Route
             exact
             path="/"
