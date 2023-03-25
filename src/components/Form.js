@@ -5,7 +5,7 @@ function Form(props) {
   const { loggedIn } = React.useContext(CurrentUserContext);
   return (
     <form
-      className={`form ${props.name}-form ${!loggedIn && "form_type_auth"}`}
+      className={`form ${props.name}-form ${!loggedIn && 'form_type_auth'}`}
       name={props.name}
       onSubmit={props.onSubmit}
     >
@@ -13,7 +13,12 @@ function Form(props) {
         {props.title}
       </h2>
       {props.children}
-      <button type="submit" className={`form__save-button ${!loggedIn && "form__save-button_type_auth"}`}>
+      <button
+        type="submit"
+        className={`form__save-button ${
+          !loggedIn && 'form__save-button_type_auth'
+        }`}
+      >
         {props.buttonText}
       </button>
       {props.haveAcc && props.haveAcc}

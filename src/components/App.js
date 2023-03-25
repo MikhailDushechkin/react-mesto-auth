@@ -49,21 +49,14 @@ function App() {
   }
 
   function handleLogin(email, password) {
-    setInfoPopupOpen(true);
     auth.authorize(email, password).then((data) => {
       if (data.token) {
         setFormData({
           email: '',
           password: '',
         });
-        setIsSuccess(true);
-        setTimeout(() => {
-          setInfoPopupOpen(false);
-        }, 1000);
-        setTimeout(() => {
-          setLoggedIn(true);
-          navigate('/');
-        }, 1500);
+        setLoggedIn(true);
+        navigate('/');
       }
     });
   }
@@ -203,9 +196,9 @@ function App() {
   }
 
   React.useEffect(() => {
-    setIsMenuOpen(false)
-  },[navigate])
-  
+    setIsMenuOpen(false);
+  }, [navigate]);
+
   function handleMenuClick() {
     setIsMenuOpen(!isMenuOpen);
   }

@@ -5,8 +5,8 @@ import Form from './Form';
 import * as auth from '../utils/auth';
 import { AuthDataContext } from '../contexts/AuthDataContext';
 
-function Login({onLogin}) {
-  const {formData, setFormData} = React.useContext(AuthDataContext)
+function Login({ onLogin }) {
+  const { formData, setFormData } = React.useContext(AuthDataContext);
 
   function handleChangeData(evt) {
     const { name, value } = evt.target;
@@ -22,7 +22,7 @@ function Login({onLogin}) {
     if (!formData.email || !formData.password) {
       return;
     }
-    onLogin(formData.email, formData.password)
+    onLogin(formData.email, formData.password);
   }
 
   return (
@@ -44,7 +44,7 @@ function Login({onLogin}) {
                 minLength="5"
                 maxLength="40"
                 required
-                value={formData.email  || ''}
+                value={formData.email || ''}
                 onChange={handleChangeData}
               />
               <span className="form__input-error avatar-link-error"></span>

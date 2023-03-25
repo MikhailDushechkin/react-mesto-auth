@@ -30,13 +30,22 @@ function Header({ email, onSignOut, isMenuOpen, onMenuClick }) {
               path="/"
               element={
                 <>
-                  <div className={`header__auth-block ${isMenuOpen && 'header__auth-block_mobile'}`}>
+                  <div
+                    className={`header__auth-block ${
+                      isMenuOpen && 'header__auth-block_mobile'
+                    }`}
+                  >
                     <span className="header__auth-user">{email}</span>
                     <button onClick={onSignOut} className="header__auth-button">
                       Выйти
                     </button>
                   </div>
-                  <div onClick={onMenuClick} className={`burger-menu ${isMenuOpen && 'burger-menu_close'}`}>
+                  <div
+                    onClick={onMenuClick}
+                    className={`burger-menu ${
+                      isMenuOpen && 'burger-menu_close'
+                    }`}
+                  >
                     <div className="burger-menu__line"></div>
                     <div className="burger-menu__line"></div>
                     <div className="burger-menu__line"></div>
