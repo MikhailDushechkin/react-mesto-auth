@@ -22,7 +22,6 @@ export const register = (email, password) => {
     .then((data) => {
       return data;
     })
-    .catch((err) => console.log(err));
 };
 
 export const authorize = (email, password) => {
@@ -43,7 +42,6 @@ export const authorize = (email, password) => {
         return data;
       }
     })
-    .catch((err) => console.log(err));
 };
 
 export const checkToken = (token) => {
@@ -56,5 +54,4 @@ export const checkToken = (token) => {
   })
     .then(checkResponse)
     .then((data) => data)
-    .catch((err) => console.log(err));
 };

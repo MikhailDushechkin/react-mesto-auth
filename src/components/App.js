@@ -39,26 +39,32 @@ function App() {
 
   function handleRegister(email, password) {
     setInfoPopupOpen(true);
-    auth.register(email, password).then((res) => {
-      if (res) {
-        setIsSuccess(true);
-        setTimeout(() => setInfoPopupOpen(false), 1000);
-        setTimeout(() => navigate('/sign-in'), 1500);
-      }
-    });
+    auth
+      .register(email, password)
+      .then((res) => {
+        if (res) {
+          setIsSuccess(true);
+          setTimeout(() => setInfoPopupOpen(false), 1000);
+          setTimeout(() => navigate('/sign-in'), 1500);
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleLogin(email, password) {
-    auth.authorize(email, password).then((data) => {
-      if (data.token) {
-        setFormData({
-          email: '',
-          password: '',
-        });
-        setLoggedIn(true);
-        navigate('/');
-      }
-    });
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          setFormData({
+            email: '',
+            password: '',
+          });
+          setLoggedIn(true);
+          navigate('/');
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   function signOut() {

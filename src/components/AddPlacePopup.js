@@ -1,37 +1,29 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
+import useFormAndValidation from '../hooks/FormValidation';
 
 function AddPlacePopup({ isOpen, onClose, onAddCard }) {
-  const [name, setName] = React.useState('');
-  const [link, setLink] = React.useState('');
-
-  function handleAddPlace(evt) {
-    if (evt.target.name === 'name') {
-      setName(evt.target.value);
-    }
-    if (evt.target.name === 'link') {
-      setLink(evt.target.value);
-    }
-  }
+  const { values, handleChangeValue, errors, isValid, resetForm } =
+    useFormAndValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
     onAddCard({
-      name: name,
-      link: link,
+      name: values.name,
+      link: values.link,
     });
   }
 
   React.useEffect(() => {
-    setName('');
-    setLink('');
-  }, [isOpen]);
+    resetForm();
+  }, [resetForm, isOpen]);
 
   return (
     <PopupWithForm
       name="cards"
       title="Новое место"
       isOpen={isOpen}
+      isDisabled={!isValid}
       onClose={onClose}
       onSubmit={handleSubmit}
       children={
@@ -47,10 +39,16 @@ function AddPlacePopup({ isOpen, onClose, onAddCard }) {
                 minLength="2"
                 maxLength="30"
                 required
-                value={name}
-                onChange={handleAddPlace}
+                value={values.name || ''}
+                onChange={handleChangeValue}
               />
-              <span className="form__input-error photo-name-error"></span>
+              <span
+                className={`form__input-error photo-name-error ${
+                  !isValid && 'form__input-error_active'
+                }`}
+              >
+                {errors.name}
+              </span>
             </label>
             <label className="form__field">
               <input
@@ -60,10 +58,16 @@ function AddPlacePopup({ isOpen, onClose, onAddCard }) {
                 placeholder="Ссылка на картинку"
                 name="link"
                 required
-                value={link}
-                onChange={handleAddPlace}
+                value={values.link || ''}
+                onChange={handleChangeValue}
               />
-              <span className="form__input-error photo-link-error"></span>
+              <span
+                className={`form__input-error photo-link-error ${
+                  !isValid && 'form__input-error_active'
+                }`}
+              >
+                {errors.link}
+              </span>
             </label>
           </fieldset>
         </>

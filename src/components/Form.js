@@ -17,7 +17,7 @@ function Form(props) {
         type="submit"
         className={`form__save-button ${
           !loggedIn && 'form__save-button_type_auth'
-        }`}
+        } ${props.isDisabled && 'form__save-button_inactive'}`}
       >
         {props.buttonText}
       </button>
